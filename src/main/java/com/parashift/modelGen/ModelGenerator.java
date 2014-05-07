@@ -117,27 +117,6 @@ class GenerateModel {
         //gen associations
         genCollection(entity,"associations", "association", source);
         genCollection(entity,"associations", "childAssociation", source);
-
-        /*
-        Class.Properties properties = (Class.Properties) PropertyUtils.getSimpleProperty(entity, "properties");
-        if(properties != null){
-            for(Property property: properties.getProperty()){
-                genQName(property, source);
-            }
-        }
-
-        //gen associations
-        Class.Associations assocs = (Class.Associations) PropertyUtils.getSimpleProperty(entity, "associations");
-        if(assocs != null){
-            for(Association assoc: assocs.getAssociation()){
-                genQName(assoc, source);
-            }
-
-            for(Association assoc: assocs.getChildAssociation()){
-                genQName(assoc, source);
-            }
-        }
-        */
     }
 
     public String getVersion(String uri){
