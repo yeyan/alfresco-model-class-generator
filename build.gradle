@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+version = '0.1.0'
+mainClassName = 'com.parashift.modelGen.Application'
+
+run {
+    args "-c com.parashift.vers.model.VersModel -d ../../vers-module/src/main/java ../../vers-module/src/main/resources/META-INF/alfresco/models/versModel.xml".split("[ ]+")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'commons-beanutils:commons-beanutils:1.9.1'
+    compile 'args4j:args4j:2.0.26'
+}
+
+jar {
+    baseName = "model-gen"
+    version = project.version
+
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = "1.11"
+}
+
