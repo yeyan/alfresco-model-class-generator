@@ -13,10 +13,10 @@ import java.util.List;
  * Created by ye.yan on 5/7/2014.
  */
 public class Options {
-    @Option(name="-c", usage="set class name", required = true)
+    @Option(name="-c", usage="full qualified class name", required = true, metaVar = "CLASS")
     private String className = null;
 
-    @Option(name="-d", usage="base directory generated class will be placed to")
+    @Option(name="-d", usage="base directory where generated class will be placed to")
     private File outputDir = new File(".");
 
     @Argument
