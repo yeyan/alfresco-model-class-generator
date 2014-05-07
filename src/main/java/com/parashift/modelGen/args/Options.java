@@ -19,9 +19,6 @@ public class Options {
     @Option(name="-d", usage="base directory where generated class will be placed to")
     private File outputDir = new File(".");
 
-    @Option(name="-e", usage="enable check when processing the generation")
-    private boolean isConventionCheckEnabled = false;
-
     @Argument
     private List<String> arguments = new ArrayList<>();
 
@@ -38,10 +35,6 @@ public class Options {
     public File getInput() {
 
         return input;
-    }
-
-    public boolean isConventionCheckEnabled() {
-        return isConventionCheckEnabled;
     }
 
     public static Options parseOptions(String[] args) throws OptionException {
@@ -90,7 +83,6 @@ public class Options {
 
         buffer.append("class_name = ").append(className).append("\n");
         buffer.append("input_file = ").append(input.getAbsolutePath()).append("\n");
-        buffer.append("check_enabled = ").append(isConventionCheckEnabled).append("\n");
         buffer.append("output_directory = ").append(outputDir.getAbsolutePath()).append("\n");
 
         return buffer.toString();

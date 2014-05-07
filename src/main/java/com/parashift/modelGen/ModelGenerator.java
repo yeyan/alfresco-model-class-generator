@@ -19,9 +19,7 @@ public class ModelGenerator {
     public static void generate(Options opts) throws IOException, JAXBException {
         SourceWriter source = null;
         Model model = null;
-
         GenerateModel generateModel = new GenerateModel();
-        generateModel.setCheckEnabled(opts.isConventionCheckEnabled());
 
         try {
             JAXBContext context = JAXBContext.newInstance("com.parashift.modelGen.xml");
@@ -98,22 +96,21 @@ class GenerateModel {
         String prefix = getPrefix(entityName);
         String name = getName(entityName);
 
-        if(isCheckEnabled()){
-            if(prefix.length() == 0){
-                System.err.format("WARN %s is not prefixed.\n", entityName);
-            }else {
-                if (Character.isUpperCase(prefix.charAt(0))) {
-                    System.err.format("WARN the prefix of %s is not following camel case convention.\n", entityName);
-                }
+        if(prefix.length() == 0){
+            System.err.format("ERROR \"%s\" is not prefixed. (Model syntactical error)\n", entityName);
+        }else {
+            if (Character.isUpperCase(prefix.charAt(0))) {
+                System.err.format("WARN the prefix of \"%s\" is not following camel case convention.\n", entityName);
             }
+        }
 
-            if(Character.isUpperCase(name.charAt(0))){
-                System.err.format("WARN the name of %s is not following camel case convention.\n", entityName);
-            }
+        if(name.matches("^[A-Z].*")){
+            System.err.format("WARN the name of \"%s\" is not following camel case convention.\n", entityName);
+        }
 
-            if(StringUtils.contains(name, ' ')){
-                System.err.format("ERROR %s contains white space. (Generated class won't be able to compile)\n", entityName);
-            }
+        if(name.matches(".*\\s+.*")){
+            name = name.replaceAll("\\s+", "");
+            System.err.format("ERROR \"%s\" contains white space.\n", entityName);
         }
 
         List<String> constNameParts = new ArrayList<>();
