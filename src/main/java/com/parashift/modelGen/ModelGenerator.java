@@ -99,7 +99,7 @@ class GenerateModel {
         if(prefix.length() == 0){
             System.err.format("ERROR \"%s\" is not prefixed. (Model syntactical error)\n", entityName);
         }else {
-            if (Character.isUpperCase(prefix.charAt(0))) {
+            if (prefix.matches("^[A-Z].*")) {
                 System.err.format("WARN the prefix of \"%s\" is not following camel case convention.\n", entityName);
             }
         }
@@ -120,7 +120,13 @@ class GenerateModel {
         constNameParts.add(StringUtils.join(name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), "_"));
 
         String constName = StringUtils.join(constNameParts, "_").toUpperCase();
-        source.writeConstant("QName", constName, String.format("QName.createQName(%s, \"%s\")", prefixMap.get(prefix), name));
+        String uriConstName = prefixMap.get(prefix);
+
+        if(uriConstName == null){
+            System.err.println(String.format("ERROR prefix of \"%s\" is not defined", entityName));
+        }
+
+        source.writeConstant("QName", constName, String.format("QName.createQName(%s, \"%s\")", uriConstName, name));
     }
 
     public void genCollection(Object entity, String collName, String elementName, SourceWriter source) throws Exception{
