@@ -19,7 +19,9 @@ public class ModelGenerator {
     public static void generate(Options opts) throws IOException, JAXBException {
         SourceWriter source = null;
         Model model = null;
+
         GenerateModel generateModel = new GenerateModel();
+        generateModel.setCheckEnabled(opts.isConventionCheckEnabled());
 
         try {
             JAXBContext context = JAXBContext.newInstance("com.parashift.modelGen.xml");
@@ -38,6 +40,15 @@ public class ModelGenerator {
 class GenerateModel {
     private Map<String, String> prefixMap = new HashMap<>();
     private static Map<String, String> abbrevMap = new HashMap<>();
+    private boolean isCheckEnabled;
+
+    public boolean isCheckEnabled() {
+        return isCheckEnabled;
+    }
+
+    public void setCheckEnabled(boolean isCheckEnabled) {
+        this.isCheckEnabled = isCheckEnabled;
+    }
 
     static {
         abbrevMap.put("Property","prop");
@@ -87,6 +98,24 @@ class GenerateModel {
         String prefix = getPrefix(entityName);
         String name = getName(entityName);
 
+        if(isCheckEnabled()){
+            if(prefix.length() == 0){
+                System.err.format("WARN %s is not prefixed.\n", entityName);
+            }else {
+                if (Character.isUpperCase(prefix.charAt(0))) {
+                    System.err.format("WARN the prefix of %s is not following camel case convention.\n", entityName);
+                }
+            }
+
+            if(Character.isUpperCase(name.charAt(0))){
+                System.err.format("WARN the name of %s is not following camel case convention.\n", entityName);
+            }
+
+            if(StringUtils.contains(name, ' ')){
+                System.err.format("ERROR %s contains white space. (Generated class won't be able to compile)\n", entityName);
+            }
+        }
+
         List<String> constNameParts = new ArrayList<>();
 
         constNameParts.add(getAbbrev(entity.getClass().getSimpleName()));
@@ -126,12 +155,12 @@ class GenerateModel {
 
     public String getPrefix(String qname){
         int index = qname.indexOf(':');
-        return qname.substring(0, index);
+        return index == -1? "":qname.substring(0, index);
     }
 
     public String getName(String qname){
         int index = qname.indexOf(':');
-        return qname.substring(index + 1, qname.length());
+        return index == -1? qname:qname.substring(index + 1, qname.length());
     }
 }
 
