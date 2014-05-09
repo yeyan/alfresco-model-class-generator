@@ -24,7 +24,7 @@ public class SourceWriter implements Closeable{
         }
 
         source.println("import org.alfresco.service.namespace.QName;\n");
-        source.println("interface " + getClassName(qualifiedName) + " {");
+        source.println("public interface " + getClassName(qualifiedName) + " {");
     }
 
     public void writeConstant(String type, String name, String value){
