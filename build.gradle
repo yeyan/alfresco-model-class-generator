@@ -5,7 +5,9 @@ version = '0.1.0'
 mainClassName = 'com.parashift.modelGen.Application'
 
 run {
-    args "-c com.parashift.vers.model.VersModel -d ../../vers-module/src/main/java ../../vers-module/src/main/resources/META-INF/alfresco/models/versModel.xml".split("[ ]+")
+    //args "-c com.parashift.vers.model.VersModel -d /home/haskell/Projects/vers-module/repo/src/main/java /home/haskell/Projects/vers-module/repo/src/main/resources/META-INF/alfresco/models/versModel.xml".split("[ ]+")
+    //args "-c com.parashift.vers.invoice.InvoiceExtractorModel -d /home/haskell/Projects/invoice-extractor/src/main/java/com/parashift/invoice/model /home/haskell/Projects/invoice-extractor/src/main/resources/META-INF/alfresco/models/invoiceExtractorModel.xml".split("[ ]+")
+    args "-c com.parashift.gpc.GPCModel -d /home/haskell/Projects/nsw-trade/gpc/gpc-repo/src/main/java /home/haskell/Projects/nsw-trade/gpc/gpc-repo/src/main/resources/META-INF/alfresco/models/gpcModel.xml".split("[ ]+")
 }
 
 repositories {

@@ -30,7 +30,7 @@ public class ModelGenerator {
 
             generateModel.execute(model, source);
         } finally {
-            source.close();
+            if(source != null) source.close();
         }
     }
 }
